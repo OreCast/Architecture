@@ -113,3 +113,6 @@ curl -s http://localhost:9091/sites | jq
 - and, finally visit Frontend url `http://localhost:9000` and visit
 `Sites` page. It will show Sites with corresponding MetaData, and if
 you'll click on specific site it will show its data (storage info).
+
+### Admin topics with MinIO
+- [Data redundancy and availability with MinIO](https://www.youtube.com/watch?v=QniHMNNmbfI)
