@@ -115,6 +115,6 @@ curl -s http://localhost:9091/sites | jq
 you'll click on specific site it will show its data (storage info).
 
 ### MinIO references
-- [MinIO for
-  developers](https://www.youtube.com/watch?v=gY090GEDdu8&list=PLFOIsHSSYIK37B3VtACkNksUw8_puUuAC&pp=iAQB)
+- [MinIO for developers](https://www.youtube.com/watch?v=gY090GEDdu8&list=PLFOIsHSSYIK37B3VtACkNksUw8_puUuAC&pp=iAQB)
+##### Administrative tasks with MinIO
 - [Data redundancy and availability with MinIO](https://www.youtube.com/watch?v=QniHMNNmbfI)
