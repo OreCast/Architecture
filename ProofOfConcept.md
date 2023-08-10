@@ -118,3 +118,5 @@ you'll click on specific site it will show its data (storage info).
 - [MinIO for developers](https://www.youtube.com/watch?v=gY090GEDdu8&list=PLFOIsHSSYIK37B3VtACkNksUw8_puUuAC&pp=iAQB)
 ##### Administrative tasks with MinIO
 - [Data redundancy and availability with MinIO](https://www.youtube.com/watch?v=QniHMNNmbfI)
+##### APIs
+- [Build scalable RESTful APIs with Go gin-gonic](https://medium.com/@wahyubagus1910/build-scalable-restful-api-with-golang-gin-gonic-framework-43793c730d10)
