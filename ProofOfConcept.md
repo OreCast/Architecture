@@ -1,6 +1,6 @@
 This document describe proof-of-concept for OreCast architecture
 ![Architecture](https://github.com/OreCast/Architecture/blob/main/OreCastInfrastructure.png)
-The receipt below provides information about 3 main services:
+The recipe below provides information about 3 main services:
 - Frontend, the OreCast front-end web service designed for OreCast end-users
   - by default it is deployed at `http://localhost:9000` URL
 - Discovery, the OreCast discovery services which provides site-URL
