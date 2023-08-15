@@ -1,24 +1,26 @@
-This document describe proof-of-concept for OreCast architecture
+This document describes proof-of-concept for OreCast architecture:
 ![Architecture](https://github.com/OreCast/Architecture/blob/main/OreCastInfrastructure.png)
+
+### Details of implementation
 The recipe below provides information about 3 main services:
-- Frontend, the OreCast front-end web service designed for OreCast end-users
+- Frontend service, the OreCast front-end web service designed for OreCast end-users
   - by default it is deployed at `http://localhost:9000` URL
-- Discovery, the OreCast discovery services which provides site-URL
+- Discovery service, the OreCast discovery services which provides site-URL
   associations
   - by default it is deployed at `http://localhost:9091` URL
   - so far it only has `/sites` end-point which you may used and it
   provides site information in JSON data-format
-- MetaData, the OreCast meta-data services which contains meta-data
+- MetaData servuce, the OreCast meta-data services which contains meta-data
 information about specific sites
   - by default it is deployed at `http://localhost:9092` URL
   - so far it only has `/meta` end-point which you may used and it
   provides meta-data information in JSON data-format
 
 At this moment the Discovery and MetaData services use fake data, i.e.
-we hard-coded site and meta-data info. And, frontend service will use
-`play.min.io` to simulate storage access. But it relies on
+we hard-coded site and meta-data info. And, frontend service relies on usage of
+`play.min.io` to simulate storage access. But it is based on
 [min.io Go SDK](https://min.io/docs/minio/linux/developers/go/minio-go.html)
-to access the storage.
+to provide access to the storage.
 
 Here is full set of instructions to run OreCast on your local node:
 ```
@@ -58,10 +60,10 @@ do
         echo $! > logs/$srv.pid
 done
 ```
-As you can see it will create logs area and start each service independently.
+The script above creates logs area and starts each service independently.
 In log area you'll have correspoding log and pid files for your inspection.
 
-Once all services have started you may perform individual tests:
+Once all services have started we may perform individual tests:
 - test MetaData service:
 ```
 curl -s http://localhost:9092/meta | jq
@@ -110,9 +112,9 @@ curl -s http://localhost:9091/sites | jq
   }
 ]
 ```
-- and, finally visit Frontend url `http://localhost:9000` and visit
-`Sites` page. It will show Sites with corresponding MetaData, and if
-you'll click on specific site it will show its data (storage info).
+- and, finally we may visit Frontend url `http://localhost:9000` and see
+`Sites` page. It will show Sites with corresponding MetaData, and provide
+details of specific site and show its data (storage info).
 
 ### MinIO references
 - [MinIO for developers](https://www.youtube.com/watch?v=gY090GEDdu8&list=PLFOIsHSSYIK37B3VtACkNksUw8_puUuAC&pp=iAQB)
