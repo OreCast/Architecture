@@ -7,10 +7,12 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 
 	minio "github.com/minio/minio-go/v7"
 	credentials "github.com/minio/minio-go/v7/pkg/credentials"
@@ -66,15 +68,58 @@ func minioHelper() {
 		fmt.Println(bucket)
 	}
 	// get bucket tags
-	bucket := "bucket"
-	log.Println("\n### now list single bucket content", bucket)
-	tags, err := minioClient.GetBucketTagging(ctx, bucket)
+	bucketName := "bucket"
+	location := "Cornell-s3"
+	log.Println("\n### now list single bucket content", bucketName)
+
+	// create new bucket
+	err = minioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{Region: location})
+	if err != nil {
+		// Check to see if we already own this bucket (which happens if you run this twice)
+		exists, errBucketExists := minioClient.BucketExists(ctx, bucketName)
+		if errBucketExists == nil && exists {
+			log.Printf("We already own %s\n", bucketName)
+		} else {
+			log.Fatalln(err)
+		}
+	} else {
+		log.Printf("Successfully created %s\n", bucketName)
+	}
+
+	// Upload the zip file
+	objectName := "archive.zip"
+	filePath := "/tmp/archive.zip"
+	contentType := "application/zip"
+
+	if _, err := os.Stat(filePath); err == nil {
+		log.Printf("Will upload %s to s3", filePath)
+	} else if errors.Is(err, os.ErrNotExist) {
+		log.Printf("File %s does not exist, error %v", filePath, err)
+	} else {
+		// Schrodinger: file may or may not exist. See err for details.
+		// Therefore, do *NOT* use !os.IsNotExist(err) to test for file existence
+		log.Printf("Unkown stat of file %s, error %v", filePath, err)
+	}
+
+	// Upload the zip file with FPutObject
+	info, err := minioClient.FPutObject(
+		ctx,
+		bucketName,
+		objectName,
+		filePath,
+		minio.PutObjectOptions{ContentType: contentType})
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Printf("\nbucket %v Object Tags: %v\n", bucket, tags)
+	log.Printf("Successfully uploaded %s of size %d to bucket %s\n", objectName, info.Size, bucketName)
+
+	tags, err := minioClient.GetBucketTagging(ctx, bucketName)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Printf("\nbucket %v Object Tags: %v\n", bucketName, tags)
 	prefix := "mac" // pattern we would like to apply, put empty string to list everything
-	objectCh := minioClient.ListObjects(ctx, bucket, minio.ListObjectsOptions{
+	objectCh := minioClient.ListObjects(ctx, bucketName, minio.ListObjectsOptions{
 		Prefix:    prefix,
 		Recursive: true,
 	})
