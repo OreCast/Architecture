@@ -64,55 +64,90 @@ The script above creates logs area and starts each service independently.
 In log area you'll have correspoding log and pid files for your inspection.
 
 Once all services have started we may perform individual tests:
+
+### Setup s3 storage at a site.
+We can setup s3 storage on a specific site by running on it [minio](https://min.io) server, e.g.
+```
+# login to Cornell site and start s3 server
+minio server /nfs/chess/s3
+```
+It will provide required URL of the server which now we can inject into
+Discovery service
+
+At your site S3 setup you'll be provided RootUser and RootPass parameters,
+or they can be fed to minio command. They become yoru access key and
+secrets to access s3 storage via API. Therefore, we should encrypt them
+to propagate to Discovery service. This can be done via
+[enc]() tool as following:
+```
+# here is ane example how to encrypt entry `test` with secret `bla` and `aes cipher`
+./enc -cipher aes -entry test -secret bla -action encrypt
+dd15043547b9d422d5859e853a33f71921b9257b2ca181183c6aa99411390a38
+
+# decrypt encrypted hex entry with you cipher and secret
+./enc -cipher aes -entry dd15043547b9d422d5859e853a33f71921b9257b2ca181183c6aa99411390a38 -secret bla -action decrypt
+test
+```
+
+### Register new site in Data Discovery service
+To register new site in Data Discovery service we should perform
+the following set of actions:
+
+- inject site information to Discovery service:
+```
+curl -X POST -H "Content-type: application/json" \
+    -d '{"name":"cornell", "url": "http://localhost:xxxx", "access_key":"xxx", "access_secret":"xxx"}' \
+    http://localhost:9091/sites
+```
+Once we inserted the record we may look-up back existing sites in discovery
+service
+- look-up site information about existing (registered) sites:
+```
+curl -s http://localhost:9091/sites
+[{"name":"cornell","url":"http://localhost:xxx"}]%
+```
+At this point we have one registered site `cornell` in our discovery
+service. This demonstrates how client will interact with Data Discovery
+service.
+
+### Handling MetaData information
+Now, when we have sites some sites available we can inject
+some meta-data about our materials. First, let's inject
+new meta-data record about our `cornell` site:
+```
+# inject few records about minearls waste
+curl -X POST -H "Content-type: application/json" \
+    -d '{"site":"cornell", "description": "mineral waste", "tags": ["waste", "minerals"]}' \
+    http://localhost:9092/meta
+
+# you may inject as many records as you like
+...
+```
+
+Now, we can query MetaData service about existing records, e.g.
+
 - test MetaData service:
 ```
 curl -s http://localhost:9092/meta | jq
 [
   {
-    "site": "SiteA",
-    "description": "this site provides access to mineral waste",
+    "site": "cornell",
+    "description": "mineral waste",
     "tags": [
       "waste",
       "minerals"
     ]
-  },
-  {
-    "site": "SiteB",
-    "description": "this site provides access to metal waste",
-    "tags": [
-      "waste",
-      "metal"
-    ]
-  },
-  {
-    "site": "SiteC",
-    "description": "this site provides access to glass waste",
-    "tags": [
-      "waste",
-      "glass"
-    ]
   }
 ]
 ```
-- test Discovery service, e.g.
-```
-curl -s http://localhost:9091/sites | jq
-[
-  {
-    "name": "SiteA",
-    "url": "http://aaa.com"
-  },
-  {
-    "name": "SiteB",
-    "url": "http://bbb.com"
-  },
-  {
-    "name": "SiteC",
-    "url": "http://ccc.com"
-  }
-]
-```
-- and, finally we may visit Frontend url `http://localhost:9000` and see
+
+### OreCast frontend
+So far we described how various clients can interact with OreCast
+services. Assuming that this information will be injected at some
+point we can demonstrate how we can navigate it using OreCase frontend
+service.
+
+For that let's visit our frontend URL: `http://localhost:9000` and visit
 `Sites` page. It will show Sites with corresponding MetaData, and provide
 details of specific site and show its data (storage info).
 
