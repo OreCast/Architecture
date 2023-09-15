@@ -7,12 +7,12 @@ The recipe below provides information about 3 main services:
   - by default it is deployed at `http://localhost:9000` URL
 - Discovery service, the OreCast discovery services which provides site-URL
   associations
-  - by default it is deployed at `http://localhost:9091` URL
+  - by default it is deployed at `http://localhost:8320` URL
   - so far it only has `/sites` end-point which you may used and it
   provides site information in JSON data-format
 - MetaData servuce, the OreCast meta-data services which contains meta-data
 information about specific sites
-  - by default it is deployed at `http://localhost:9092` URL
+  - by default it is deployed at `http://localhost:8300` URL
   - so far it only has `/meta` end-point which you may used and it
   provides meta-data information in JSON data-format
 
@@ -97,13 +97,13 @@ the following set of actions:
 ```
 curl -X POST -H "Content-type: application/json" \
     -d '{"name":"cornell", "url": "http://localhost:xxxx", "access_key":"xxx", "access_secret":"xxx"}' \
-    http://localhost:9091/sites
+    http://localhost:8320/sites
 ```
 Once we inserted the record we may look-up back existing sites in discovery
 service
 - look-up site information about existing (registered) sites:
 ```
-curl -s http://localhost:9091/sites
+curl -s http://localhost:8320/sites
 [{"name":"cornell","url":"http://localhost:xxx"}]%
 ```
 At this point we have one registered site `cornell` in our discovery
@@ -118,7 +118,7 @@ new meta-data record about our `cornell` site:
 # inject few records about minearls waste
 curl -X POST -H "Content-type: application/json" \
     -d '{"site":"cornell", "description": "mineral waste", "tags": ["waste", "minerals"]}' \
-    http://localhost:9092/meta
+    http://localhost:8300/meta
 
 # you may inject as many records as you like
 ...
@@ -128,7 +128,7 @@ Now, we can query MetaData service about existing records, e.g.
 
 - test MetaData service:
 ```
-curl -s http://localhost:9092/meta | jq
+curl -s http://localhost:8300/meta | jq
 [
   {
     "site": "cornell",
