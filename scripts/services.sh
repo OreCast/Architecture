@@ -16,5 +16,7 @@ do
     cd $srv
     nohup ./web 2>&1 1>& ../logs/$srv.log < /dev/null & \
         echo $! > ../logs/$srv.pid
+    echo "$srv started with PID=`cat ../logs/$srv.pid`"
+    tail -3 ../logs/$srv.log
     cd -
 done
