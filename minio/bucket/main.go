@@ -114,11 +114,12 @@ func minioHelper() {
 	log.Printf("Successfully uploaded %s of size %d to bucket %s\n", objectName, info.Size, bucketName)
 
 	tags, err := minioClient.GetBucketTagging(ctx, bucketName)
-	if err != nil {
+	if err == nil {
+		fmt.Printf("\nbucket %v Object Tags: %v\n", bucketName, tags)
+	} else {
 		log.Printf("Listing %s tagging is not possible, error %v", bucketName, err)
 	}
-	fmt.Printf("\nbucket %v Object Tags: %v\n", bucketName, tags)
-	prefix := "mac" // pattern we would like to apply, put empty string to list everything
+	prefix := "archive" // pattern we would like to apply, put empty string to list everything
 	objectCh := minioClient.ListObjects(ctx, bucketName, minio.ListObjectsOptions{
 		Prefix:    prefix,
 		Recursive: true,
