@@ -151,6 +151,17 @@ For that let's visit our frontend URL: `http://localhost:9000` and visit
 `Sites` page. It will show Sites with corresponding MetaData, and provide
 details of specific site and show its data (storage info).
 
+### Port allocation
+So far we follow these rules, all OreCast services should utilize 83xx ports,
+e.g.
+- 8343 production frontend
+- 8344 testbed frontend
+- 8300 metadata service
+- 8310 provenance service
+- 8320 discovery service
+- 8330 s3 service
+- 8340 analytics service
+
 ### MinIO references
 - [MinIO for developers](https://www.youtube.com/watch?v=gY090GEDdu8&list=PLFOIsHSSYIK37B3VtACkNksUw8_puUuAC&pp=iAQB)
 - [Data redundancy and availability with MinIO](https://www.youtube.com/watch?v=QniHMNNmbfI)
