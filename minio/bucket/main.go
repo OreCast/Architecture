@@ -115,7 +115,7 @@ func minioHelper() {
 
 	tags, err := minioClient.GetBucketTagging(ctx, bucketName)
 	if err != nil {
-		log.Fatalln(err)
+		log.Printf("Listing %s tagging is not possible, error %v", bucketName, err)
 	}
 	fmt.Printf("\nbucket %v Object Tags: %v\n", bucketName, tags)
 	prefix := "mac" // pattern we would like to apply, put empty string to list everything
