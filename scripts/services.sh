@@ -10,7 +10,7 @@ if [ -n "$pid" ]; then
 fi
 
 # start new processes
-for srv in MetaData Discovery MetaData Frontend
+for srv in MetaData Discovery DataManagement Frontend
 do
     echo "Start $srv service..."
     cd $srv
