@@ -1,10 +1,10 @@
 #!/bin/bash
 echo "inject MetaData record"
 curl -X POST -H "Content-type: application/json" \
-    -d '{"site":"cornell", "description": "waste minerals", "tags": ["waste", "minerals"], "bucket": "bucket"}' \
+    -d '{"site":"cornell", "description": "waste minerals", "tags": ["waste", "minerals"], "bucket": "waste"}' \
     http://localhost:8300/meta
 curl -X POST -H "Content-type: application/json" \
-    -d '{"site":"cornell", "description": "rare-materials", "tags": ["rare"], "bucket": "bucket"}' \
+    -d '{"site":"cornell", "description": "rare-materials", "tags": ["rare"], "bucket": "minerals"}' \
     http://localhost:8300/meta
 echo
 echo "List of meta-data records"
