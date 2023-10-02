@@ -10,7 +10,7 @@ if [ -n "$pid" ]; then
 fi
 
 # start new processes
-for srv in Authz MetaData Discovery DataManagement Frontend
+for srv in Authz MetaData Discovery DataManagement DataBookkeeping Frontend
 do
     echo "Start $srv service..."
     cd $srv
