@@ -20,8 +20,13 @@ do
             sqlite3 ./auth.db < static/schema/sqlite-schema.sql
         fi
     fi
-    nohup ./web 2>&1 1>& ../logs/$srv.log < /dev/null & \
-        echo $! > ../logs/$srv.pid
+    if [ -f server.json ]; then
+        nohup ./web -config server.json 2>&1 1>& ../logs/$srv.log < /dev/null & \
+            echo $! > ../logs/$srv.pid
+    else
+        nohup ./web 2>&1 1>& ../logs/$srv.log < /dev/null & \
+            echo $! > ../logs/$srv.pid
+    fi
     echo "$srv started with PID=`cat ../logs/$srv.pid`"
     tail -3 ../logs/$srv.log
     cd -
