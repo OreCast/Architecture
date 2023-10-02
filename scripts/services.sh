@@ -10,10 +10,16 @@ if [ -n "$pid" ]; then
 fi
 
 # start new processes
-for srv in MetaData Discovery DataManagement Frontend
+for srv in Authz MetaData Discovery DataManagement Frontend
 do
     echo "Start $srv service..."
     cd $srv
+    if [ "$srv" == "Authz" ]; then
+        # check that auth.db exists, if not we'll create it
+        if [ ! -f "auth.db" ]; then
+            sqlite3 ./auth.db < static/schema/sqlite-schema.sql
+        fi
+    fi
     nohup ./web 2>&1 1>& ../logs/$srv.log < /dev/null & \
         echo $! > ../logs/$srv.pid
     echo "$srv started with PID=`cat ../logs/$srv.pid`"
