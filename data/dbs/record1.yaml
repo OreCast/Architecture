@@ -1,0 +1,10 @@
+dataset: /a/b/c
+site: Cornell
+files:
+  - /path/file1.png
+  - /path/file2.png
+  - /path/file3.png
+buckets:
+  - minerals
+processing: glibc
+meta_id: 123xyz
