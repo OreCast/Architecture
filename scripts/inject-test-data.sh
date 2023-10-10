@@ -13,30 +13,33 @@ echo "token=$token"
 #
 echo
 echo
-echo "### inject MetaData record 1"
-cat $ddir/meta/record1.json
+fname=$ddir/meta/record1.json
+echo "### inject MetaData record $fname"
+cat $fname
 echo
 curl -v -X POST -H "Content-type: application/json" \
     -H "Authorization: Bearer $token" \
-    -d@$ddir/meta/record1.json \
+    -d@$fname \
     http://localhost:8300/meta
 echo
 echo
-echo "### inject MetaData record 2"
-cat $ddir/meta/record2.json
+fname=$ddir/meta/record2.json
+echo "### inject MetaData record $fname"
+cat $fname
 echo
 curl -v -X POST -H "Content-type: application/json" \
     -H "Authorization: Bearer $token" \
-    -d@$ddir/meta/record2.json \
+    -d@$fname \
     http://localhost:8300/meta
 echo
 echo
-echo "### inject MetaData record 3"
-cat $ddir/meta/record3.json
+fname=$ddir/meta/record3.json
+echo "### inject MetaData record $fname"
+cat $fname
 echo
 curl -v -X POST -H "Content-type: application/json" \
     -H "Authorization: Bearer $token" \
-    -d@$ddir/meta/record3.json \
+    -d@$fname \
     http://localhost:8300/meta
 echo
 echo
@@ -49,40 +52,44 @@ echo "### inject site records"
 if [ "`hostname -s`" == "lnx15" ]; then
     echo
     echo
-    echo "### inject site record 1"
-    cat $ddir/sites/record1.json
+    fname=$ddir/sites/record1.json
+    echo "### inject site record $fname"
+    cat $fname
     echo
     curl -v -X POST -H "Content-type: application/json" \
         -H "Authorization: Bearer $token" \
-        -d@$ddir/sites/record1.json \
+        -d@$fname \
         http://localhost:8320/sites
     echo
     echo
-    echo "### inject site record 2"
-    cat $ddir/sites/record2.json
+    fname=$ddir/sites/record2.json
+    echo "### inject site record $fname"
+    cat $fname
     echo
     curl -v -X POST -H "Content-type: application/json" \
         -H "Authorization: Bearer $token" \
-        -d@$ddir/sites/record2.json \
+        -d@$fname \
         http://localhost:8320/sites
 else
     echo
     echo
-    echo "### inject site record 1"
-    cat $ddir/sites/local1.json
+    fname=$ddir/sites/local1.json
+    echo "### inject site record $fname"
+    cat $fname
     echo
     curl -v -X POST -H "Content-type: application/json" \
         -H "Authorization: Bearer $token" \
-        -d@$ddir/sites/local1.json \
+        -d@$fname \
         http://localhost:8320/sites
     echo
     echo
-    echo "### inject site record 2"
-    cat $ddir/sites/local2.json
+    fname=$ddir/sites/local2.json
+    echo "### inject site record $fname"
+    cat $fname
     echo
     curl -v -X POST -H "Content-type: application/json" \
         -H "Authorization: Bearer $token" \
-        -d@$ddir/sites/local2.json \
+        -d@$fname \
         http://localhost:8320/sites
 fi
 echo
@@ -92,11 +99,32 @@ curl -v -H "Authorization: Bearer $token" http://localhost:8320/sites
 echo
 
 echo
-echo "### insert record into DBS system"
-cat $ddir/dbs/record1.json
+fname=$ddir/dbs/record1.json
+echo "### insert record 1 into DBS system $fname"
+cat $fname
 echo
 curl -v -X POST -H "Authorization: Bearer $token" \
     -H "Content-type: application/json" \
-    -d@$ddir/dbs/record1.json \
+    -d@$fname \
     http://localhost:8310/dataset
+echo
+
+echo
+fname=$ddir/dbs/record2.json
+echo "### insert record 2 into DBS system $fname"
+cat $fname
+echo
+curl -v -X POST -H "Authorization: Bearer $token" \
+    -H "Content-type: application/json" \
+    -d@$fname \
+    http://localhost:8310/dataset
+echo
+
+echo
+echo "### look-up all datasets"
+curl -v http://localhost:8310/datasets
+echo
+echo
+echo "### look-up concrete dataset=/x/y/z"
+curl -v http://localhost:8310/dataset/x/y/z
 echo
