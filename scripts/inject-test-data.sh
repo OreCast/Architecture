@@ -59,7 +59,7 @@ if [ "`hostname -s`" == "lnx15" ]; then
     curl -v -X POST -H "Content-type: application/json" \
         -H "Authorization: Bearer $token" \
         -d@$fname \
-        http://localhost:8320/sites
+        http://localhost:8320/site
     echo
     echo
     fname=$ddir/sites/record2.json
@@ -69,7 +69,7 @@ if [ "`hostname -s`" == "lnx15" ]; then
     curl -v -X POST -H "Content-type: application/json" \
         -H "Authorization: Bearer $token" \
         -d@$fname \
-        http://localhost:8320/sites
+        http://localhost:8320/site
 else
     echo
     echo
@@ -80,7 +80,7 @@ else
     curl -v -X POST -H "Content-type: application/json" \
         -H "Authorization: Bearer $token" \
         -d@$fname \
-        http://localhost:8320/sites
+        http://localhost:8320/site
     echo
     echo
     fname=$ddir/sites/local2.json
@@ -90,7 +90,7 @@ else
     curl -v -X POST -H "Content-type: application/json" \
         -H "Authorization: Bearer $token" \
         -d@$fname \
-        http://localhost:8320/sites
+        http://localhost:8320/site
 fi
 echo
 echo
@@ -120,11 +120,16 @@ curl -v -X POST -H "Authorization: Bearer $token" \
     http://localhost:8310/dataset
 echo
 
+dataset=/x/y/z
 echo
 echo "### look-up all datasets"
 curl -v http://localhost:8310/datasets
 echo
 echo
 echo "### look-up concrete dataset=/x/y/z"
-curl -v http://localhost:8310/dataset/x/y/z
+curl -v http://localhost:8310/dataset$dataset
+echo
+echo
+echo "### look-up files from a dataset"
+curl -v "http://localhost:8310/file?dataset=$dataset"
 echo
